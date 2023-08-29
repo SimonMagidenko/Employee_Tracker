@@ -35,32 +35,46 @@ const startPrompt = async () => {
 
     switch (selectedOption) {
         case 'View All Departments':
+            await viewAllDepartments();
             break;
         case 'View All Roles':
+            await viewAllRoles();
             break;
         case 'View All Employees':
+            await viewAllEmployees();
             break;
         case 'View Employees by Manager':
+            await viewEmployeesByManager();
             break;
         case 'View Employees by Department':
+            await viewEmployeesByDepartment();
             break;
         case 'View Department Budget':
+            await viewDepartmentBudget();
             break;
         case 'Add a Department':
+            await addDepartment();
             break;
         case 'Add a Role':
+            await addRole();
             break;
         case 'Add an Employee':
+            await addEmployee();
             break;
         case 'Update an Employee Role':
+            await updateEmployeeRole();
             break;
         case 'Update an Employee Manager':
+            await updateEmployeeManager();
             break;
         case 'Delete Department':
+            await deleteDepartment();
             break;
         case 'Delete Role':
+            await deleteRole();
             break;
         case 'Delete Employee':
+            await deleteEmployee();
             break;
         default:
             console.log('Invalid option');
