@@ -41,6 +41,8 @@ Using the following line of code, use nodeJS to run this application in the term
 
 ### Please refer to the video below for how to use the application:
 
+https://drive.google.com/file/d/16kd3ac64PIPkLtOJinQysg7oXhNCTl1N/view?usp=sharing
+
 ## Credits
 
 - Simon Magidenko
