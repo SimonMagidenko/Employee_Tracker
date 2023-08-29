@@ -29,7 +29,7 @@ const startPrompt = async () => {
         type: 'list',
         name: 'Main Menu',
         message: 'Please choose an option provided below.',
-        choices: ['View All Departments', 'View All Roles', 'View All Employees', 'View Employees by Manager', 'View Employees by Department', 'View Department Budget', ' Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role', 'Update an Employee Manager', 'Delete Department', 'Delete Role', 'Delete Employee'],
+        choices: ['View All Departments', 'View All Roles', 'View All Employees', 'View Employees by Manager', 'View Employees by Department', 'View Department Budget', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role', 'Update an Employee Manager', 'Delete Department', 'Delete Role', 'Delete Employee'],
     });
     const selectedOption = mainMenuOptions['Main Menu'];
 
@@ -139,6 +139,13 @@ const viewEmployeesByManager = async () => {
             }
         ]);
 
+        const managerId = parseInt(viewEmployeesByManagerPrompt.manager_id);
+        if (isNaN(managerId)) {
+            console.log("Invalid input. Please enter a valid id.");
+            startPrompt();
+            return;
+        }
+
         const queryRequest = `
         SELECT employee.id, employee.first_name, employee.last_name, role.title AS role_title
         FROM employee
@@ -157,9 +164,10 @@ const viewEmployeesByManager = async () => {
         console.table(queryResult);
         startPrompt();
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error.message);
     }
 };
+
 
 const viewEmployeesByDepartment = async () => {
     try {
@@ -170,6 +178,13 @@ const viewEmployeesByDepartment = async () => {
                 message: "Please enter the department's id number to view employees in that department (ONLY NUMBERS ALLOWED). "
             }
         ]);
+
+        const departmentId = parseInt(viewEmployeesByDepartmentPrompt.department_id);
+        if (isNaN(departmentId)) {
+            console.log("Invalid input. Please enter a valid id.");
+            startPrompt();
+            return;
+        }
 
         const queryRequest = `
         SELECT employee.id, employee.first_name, employee.last_name, role.title AS role_title
@@ -189,7 +204,7 @@ const viewEmployeesByDepartment = async () => {
         console.table(queryResult);
         startPrompt();
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error.message)
     }
 };
 
@@ -202,6 +217,13 @@ const viewDepartmentBudget = async () => {
                 message: "Please enter the id of the department you want to view the budget for. Enter ONLY numbers."
             }
         ]);
+
+        const departmentId = parseInt(viewDepartmentBudgetPrompt.department_id);
+        if (isNaN(departmentId)) {
+            console.log("Invalid input. Please enter a valid id.");
+            startPrompt();
+            return;
+        }
 
         const queryRequest = `
         SELECT department.department_name, SUM(role.salary) AS utilized_budget
@@ -223,7 +245,7 @@ const viewDepartmentBudget = async () => {
         console.table(queryResult);
         startPrompt();
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error.message);
     }
 };
 
@@ -237,8 +259,16 @@ const addDepartment = async () => {
             },
         ]);
 
+        const departmentName = addDepartmentPrompt.add_department;
+
+        if (!departmentName.trim()) {
+            console.log('Department name cannot be empty. The department was not added.');
+            startPrompt();
+            return;
+        }
+
         const queryRequest = `INSERT INTO department (department_name) VALUES (?)`;
-        const params = [addDepartmentPrompt.add_department];
+        const params = [departmentName];
 
         await new Promise((resolve, reject) => {
             db.query(queryRequest, params, (err, res) => {
@@ -258,9 +288,11 @@ const addDepartment = async () => {
         console.table(queryResult);
         startPrompt();
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error.message);
     }
-}
+};
+
+
 
 const addRole = async () => {
     try {
@@ -281,7 +313,7 @@ const addRole = async () => {
                 message: "Please enter the department's id associated with the role you want to add to the database."
             }
         ]);
-        const queryRequest = 'INSERT INTO role (title, salary, department_id) VALUES (?, ?)';
+        const queryRequest = 'INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)';
         const params = [addRolePrompt.role_title, addRolePrompt.role_salary, addRolePrompt.department_id];
 
         await new Promise((resolve, reject) => {
@@ -302,7 +334,7 @@ const addRole = async () => {
         console.table(queryResult);
         startPrompt()
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        console.error(error.message);
     };
 };
 
@@ -414,13 +446,18 @@ const updateEmployeeManager = async () => {
             },
             {
                 name: "manager_id",
-                type: "number",
-                message: "Please enter the new manager's id number associated with the employee you want to update in the database (ONLY NUMBERS ALLOWED)."
+                type: "input",
+                message: "Please enter the new manager's id number associated with the employee you want to update in the database (ONLY NUMBERS ALLOWED), or leave it empty to remove the manager."
             }
         ]);
 
+        let managerIdValue = updateEmployeeManagerPrompt.manager_id;
+        if (managerIdValue.trim() === "") {
+            managerIdValue = null;
+        }
+
         const queryRequest = "UPDATE employee SET manager_id = ? WHERE first_name = ? AND last_name = ?";
-        const params = [updateEmployeeManagerPrompt.manager_id, updateEmployeeManagerPrompt.first_name, updateEmployeeManagerPrompt.last_name];
+        const params = [managerIdValue, updateEmployeeManagerPrompt.first_name, updateEmployeeManagerPrompt.last_name];
 
         await new Promise((resolve, reject) => {
             db.query(queryRequest, params, (err, res) => {
@@ -440,9 +477,10 @@ const updateEmployeeManager = async () => {
         console.table(queryResult);
         startPrompt();
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error.message);
     }
 };
+
 
 const deleteDepartment = async () => {
     try {
