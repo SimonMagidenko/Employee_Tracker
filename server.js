@@ -372,6 +372,7 @@ const addEmployee = async () => {
             });
         });
 
+
         const queryResult = await new Promise((resolve, reject) => {
             db.query('SELECT * FROM employee', (err, res) => {
                 if (err) reject(err);
@@ -382,7 +383,7 @@ const addEmployee = async () => {
         console.table(queryResult);
         startPrompt();
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        console.error(error.message);
     };
 };
 
