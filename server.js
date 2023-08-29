@@ -29,7 +29,7 @@ const startPrompt = async () => {
         type: 'list',
         name: 'Main Menu',
         message: 'Please choose an option provided below.',
-        choices: ['View All Departments', 'View All Roles', 'View All Employees', ' Add A Department', 'Add A Role', 'Update an Employee Role', 'Update an Employee Manager', 'Delete Department', 'Delete Role', 'Delete Employee'],
+        choices: ['View All Departments', 'View All Roles', 'View All Employees', 'View Employees by Manager', 'View Employees by Department', 'View Department Budget', ' Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role', 'Update an Employee Manager', 'Delete Department', 'Delete Role', 'Delete Employee'],
     });
     const selectedOption = mainMenuOptions['Main Menu'];
 
@@ -40,9 +40,17 @@ const startPrompt = async () => {
             break;
         case 'View All Employees':
             break;
-        case 'Add A Department':
+        case 'View Employees by Manager':
             break;
-        case 'Add A Role':
+        case 'View Employees by Department':
+            break;
+        case 'View Department Budget':
+            break;
+        case 'Add a Department':
+            break;
+        case 'Add a Role':
+            break;
+        case 'Add an Employee':
             break;
         case 'Update an Employee Role':
             break;
