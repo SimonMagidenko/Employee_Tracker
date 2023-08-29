@@ -22,7 +22,7 @@ Change your current working directory to the cloned repository's directory:
 
 ### 3. Install Dependencies:
 
--Make sure you have nodeJS installed on your machine. If you do not have nodeJS installed, go to this link (https://nodejs.org/en/download) and download node according to your OS.
+-Make sure you have nodeJS installed on your machine. If you do not have nodeJS installed, go to this link (https://nodejs.org/en/download) and download nodeJS according to your OS.
 
 Install the following:
 
