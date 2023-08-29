@@ -11,7 +11,7 @@ department_name: VARCHAR (60) NOT NULL
 CREATE Table role (
 id INT AUTO_INCREMENT PRIMARY KEY
 title VARCHAR (60) NOT NULL
-Salary INT NOT NULL
+salary INT NOT NULL
 department_id INT NOT NULL
 FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE CASCADE
 
